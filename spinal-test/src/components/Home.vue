@@ -116,18 +116,6 @@ export default {
 
   },
 
-
-  watch: {
-    // floors(floorsVal) {
-    //   console.log('floors', floorsVal);
-    // },
-    // isSelected(isSelected) {
-    //   console.log('isSelected', isSelected);
-    // },
-    // selectedFloor(selectFloorVal) {
-    //   console.log('selectedFloor', selectFloorVal[0]);
-    // }
-  }
 }
 </script>
 
@@ -219,14 +207,6 @@ export default {
   margin-bottom: 15px;
   padding-bottom: 1em;
 }
-
-/* .border-styled-selected {
-  border-radius: 10px 50px / 50px;
-  background-color: #ffffff;
-  padding-right: 1em;
-  padding-left: 1em;
-  margin-bottom: 15px;
-} */
 
 .hover {
   cursor: pointer;
