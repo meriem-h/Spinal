@@ -19,7 +19,8 @@
       <article class=" list-room ">
         <h1>Detail pieces : </h1>
         <div class="bg-grey overflow rounded" v-if="selectedFloor && selectedFloor.length > 0">
-          <aside class=" border-styled hover border-styled" @click="showDetail(room.dynamicId)"
+          <aside class="border-styled hover" @click="showDetail(room.dynamicId)"
+          :class="{ 'border-styled-selected' : isDetail == room.dynamicId && room.endpoint[0]}"
             v-for="room in selectedFloor" :key="room.dynamicId">
             <div class="flex-center item-center">
               <p>{{ room.name }}</p>
@@ -206,6 +207,16 @@ export default {
   /* border-radius: 10px 100px / 120px; */
   border-radius: 10px 50px / 50px;
   background-color: #ffffff;
+  padding-right: 1em;
+  padding-left: 1em;
+  margin-bottom: 15px;
+  padding-bottom: 1em;
+}
+
+.border-styled-selected {
+  /* border-radius: 10px 100px / 120px; */
+  border-radius: 10px 50px / 50px;
+  background-color: #f1f3f2;
   padding-right: 1em;
   padding-left: 1em;
   margin-bottom: 15px;
