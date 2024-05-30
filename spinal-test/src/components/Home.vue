@@ -7,6 +7,7 @@
     <section v-else class="flex-center">
 
       <article class="overflow list-floor">
+        <h1>Etages :</h1>
         <div v-for="floor in floors" :key="floor.dynamicId" @click="selectFloor(floor.dynamicId)">
           <p class="rounded hover"
             :class="{ 'bg-selected': isSelected == floor.dynamicId, 'bg-floor': isSelected !== floor.dynamicId }">
@@ -15,8 +16,9 @@
         </div>
       </article>
 
-      <article class="overflow list-room rounded">
-        <div v-if="selectedFloor && selectedFloor.length > 0">
+      <article class=" list-room ">
+        <h1>Detail pieces : </h1>
+        <div class="bg-grey overflow rounded" v-if="selectedFloor && selectedFloor.length > 0">
           <aside class=" border-styled hover border-styled" @click="showDetail(room.dynamicId)"
             v-for="room in selectedFloor" :key="room.dynamicId">
             <div class="flex-center item-center">
@@ -150,8 +152,10 @@ export default {
 
 .list-room {
   width: 50%;
-  background-color: #C5C6C6;
+}
 
+.bg-grey{
+  background-color: #C5C6C6;
 }
 
 .bg-true {
