@@ -7,7 +7,9 @@
 
       <article class="overflow list-floor">
         <div v-for="floor in floors" :key="floor.dynamicId" @click="selectFloor(floor.dynamicId)">
-          <p  :class="{}" class="bg-test rounded">
+          <p class="rounded hover"
+            :class="{ 'bg-selected': isSelected == floor.dynamicId, 'bg-floor': isSelected !== floor.dynamicId }">
+            <!-- <p  :class="{}" class="bg-selected rounded"> -->
             {{ floor.name }}
           </p>
         </div>
@@ -18,9 +20,11 @@
           <aside v-for="room in selectedFloor" :key="room.dynamicId" class="flex-center item-center border-styled">
             <p>{{ room.name }}</p>
 
-            <p class="bg-true rounded status-width text-center" v-if="room.endpoint[0]?.endpoints[4].currentValue == true">true</p>
-            <p class="bg-false rounded status-width text-center" v-if="room.endpoint[0]?.endpoints[4].currentValue == false">false</p>
-            <p class="bg-null rounded status-width text-center"
+            <p class="bg-true rounded status-width text-center hover"
+              v-if="room.endpoint[0]?.endpoints[4].currentValue == true">true</p>
+            <p class="bg-false rounded status-width text-center hover"
+              v-if="room.endpoint[0]?.endpoints[4].currentValue == false">false</p>
+            <p class="bg-null rounded status-width text-center hover"
               v-if="room.endpoint[0]?.endpoints[4].currentValue == undefined || room.endpoint[0]?.endpoints[4].currentValue === undefined">
               undefined</p>
 
@@ -57,7 +61,7 @@ export default {
       .then(res => {
         this.floors = res;
         this.selectFloor(res[0].dynamicId);
-        this.selectedFloor = res[0].dynamicId;
+        this.isSelected = res[0].dynamicId;
         this.loading = false;
       })
       .catch(error => {
@@ -69,6 +73,8 @@ export default {
   methods: {
 
     selectFloor(floor) {
+
+      this.isSelected = floor;
 
       fetch(`https://api-developers.spinalcom.com/api/v1/floor/${floor}/room_list`, this.option)
         .then(res => res.json())
@@ -96,6 +102,9 @@ export default {
     floors(floorsVal) {
       console.log('floors', floorsVal);
     },
+    isSelected(isSelected) {
+      console.log('isSelected', isSelected);
+    },
     selectedFloor(selectFloorVal) {
       console.log('selectedFloor', selectFloorVal);
     }
@@ -115,7 +124,7 @@ export default {
   justify-content: space-between;
 }
 
-.item-center{
+.item-center {
   align-items: center;
 }
 
@@ -135,7 +144,7 @@ export default {
 .list-room {
   width: 50%;
   background-color: #C5C6C6;
-  
+
 }
 
 .bg-true {
@@ -150,7 +159,7 @@ export default {
   background-color: #e5e7e6;
 }
 
-.status-width{
+.status-width {
   width: 15%;
 }
 
@@ -159,11 +168,27 @@ export default {
   padding: 1rem;
 }
 
-.bg-test{
+.bg-floor {
+  background-color: #FDF0E7;
+  border: solid;
+  border-color: #f8d5abef;
+}
+
+.bg-floor:hover {
+  background-color: #f2e3d7;
+  border: solid;
+  border-color: #f8d5abef;
+}
+
+.bg-selected {
+  background-color: #fca944;
+}
+
+.bg-selected:hover {
   background-color: #f39422;
 }
 
-.border-styled{
+.border-styled {
   border-radius: 10px 100px / 120px;
   background-color: #ffffff;
   padding-right: 1em;
@@ -172,9 +197,12 @@ export default {
 
 }
 
-aside{
+.hover {
+  cursor: pointer;
+}
+
+aside {
   width: 95%;
   margin: auto;
   padding-left: 10%;
-}
-</style>
+}</style>
