@@ -2,6 +2,7 @@
   <div class="container">
     <h1 class="text-center"> Statistique d'occupation : </h1>
 
+
     <section v-if="loading">Chargement en cours...</section>
     <section v-else class="flex-center">
 
@@ -9,7 +10,6 @@
         <div v-for="floor in floors" :key="floor.dynamicId" @click="selectFloor(floor.dynamicId)">
           <p class="rounded hover"
             :class="{ 'bg-selected': isSelected == floor.dynamicId, 'bg-floor': isSelected !== floor.dynamicId }">
-            <!-- <p  :class="{}" class="bg-selected rounded"> -->
             {{ floor.name }}
           </p>
         </div>
@@ -17,16 +17,26 @@
 
       <article class="overflow list-room rounded">
         <div v-if="selectedFloor && selectedFloor.length > 0">
-          <aside v-for="room in selectedFloor" :key="room.dynamicId" class="flex-center item-center border-styled">
-            <p>{{ room.name }}</p>
+          <aside class=" border-styled hover border-styled" @click="showDetail(room.dynamicId)"
+            v-for="room in selectedFloor" :key="room.dynamicId">
+            <div class="flex-center item-center">
+              <p>{{ room.name }}</p>
 
-            <p class="bg-true rounded status-width text-center hover"
-              v-if="room.endpoint[0]?.endpoints[4].currentValue == true">true</p>
-            <p class="bg-false rounded status-width text-center hover"
-              v-if="room.endpoint[0]?.endpoints[4].currentValue == false">false</p>
-            <p class="bg-null rounded status-width text-center hover"
-              v-if="room.endpoint[0]?.endpoints[4].currentValue == undefined || room.endpoint[0]?.endpoints[4].currentValue === undefined">
-              undefined</p>
+              <p class="bg-true rounded status-width text-center hover"
+                v-if="room.endpoint[0]?.endpoints[4].currentValue == true">true</p>
+              <p class="bg-false rounded status-width text-center hover"
+                v-if="room.endpoint[0]?.endpoints[4].currentValue == false">false</p>
+              <p class="bg-null rounded status-width text-center hover"
+                v-if="room.endpoint[0]?.endpoints[4].currentValue == undefined || room.endpoint[0]?.endpoints[4].currentValue === undefined">
+                undefined</p>
+            </div>
+
+            <div v-if="isDetail == room.dynamicId && room.endpoint[0]">
+              <hr />
+              <div v-for="detail in room.endpoint[0]?.endpoints">
+                <p>{{ detail.name }} : {{ detail.currentValue }}</p>
+              </div>
+            </div>
 
           </aside>
         </div>
@@ -41,8 +51,11 @@
 </template>
 
 <script>
+
 export default {
   name: 'HomeComponent',
+  components: {
+  },
 
   data() {
     return {
@@ -50,6 +63,7 @@ export default {
       floors: [],
       selectedFloor: null,
       isSelected: null,
+      isDetail: false,
       option: { method: "GET" }
     };
   },
@@ -94,20 +108,25 @@ export default {
           this.selectedFloor = updatedRooms;
         })
         .catch(error => console.error(error));
+    },
+
+    showDetail(id) {
+      this.isDetail = id;
     }
+
   },
 
 
   watch: {
-    floors(floorsVal) {
-      console.log('floors', floorsVal);
-    },
-    isSelected(isSelected) {
-      console.log('isSelected', isSelected);
-    },
-    selectedFloor(selectFloorVal) {
-      console.log('selectedFloor', selectFloorVal);
-    }
+    // floors(floorsVal) {
+    //   console.log('floors', floorsVal);
+    // },
+    // isSelected(isSelected) {
+    //   console.log('isSelected', isSelected);
+    // },
+    // selectedFloor(selectFloorVal) {
+    //   console.log('selectedFloor', selectFloorVal[0]);
+    // }
   }
 }
 </script>
@@ -182,6 +201,9 @@ export default {
 
 .bg-selected {
   background-color: #fca944;
+  border: solid;
+  border-color: #fca944;
+
 }
 
 .bg-selected:hover {
@@ -189,13 +211,22 @@ export default {
 }
 
 .border-styled {
-  border-radius: 10px 100px / 120px;
+  /* border-radius: 10px 100px / 120px; */
+  border-radius: 10px 50px / 50px;
   background-color: #ffffff;
   padding-right: 1em;
   padding-left: 1em;
   margin-bottom: 15px;
-
+  padding-bottom: 1em;
 }
+
+/* .border-styled-selected {
+  border-radius: 10px 50px / 50px;
+  background-color: #ffffff;
+  padding-right: 1em;
+  padding-left: 1em;
+  margin-bottom: 15px;
+} */
 
 .hover {
   cursor: pointer;
@@ -205,4 +236,13 @@ aside {
   width: 95%;
   margin: auto;
   padding-left: 10%;
-}</style>
+}
+
+aside:hover {
+  background-color: #f1f3f2;
+}
+
+.underline {
+  border-bottom: 2px solid black
+}
+</style>
