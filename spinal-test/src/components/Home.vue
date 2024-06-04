@@ -36,7 +36,7 @@
 
             <div v-if="isDetail == room.dynamicId && room.endpoint[0]">
               <hr />
-              <div v-for="detail in room.endpoint[0]?.endpoints">
+              <div v-for="detail in room.endpoint[0]?.endpoints" :key="detail.dynamicId">
                 <p>{{ detail.name }} : {{ detail.currentValue }}</p>
               </div>
             </div>
